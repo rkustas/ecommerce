@@ -15,6 +15,14 @@ class Home extends React.Component {
 
         const loginReglink = (
             <Nav className="ml-auto">
+                <Link to="/cart" className="ml-auto p-2">
+                    <ButtonContainer>
+                        <span className="mr-2">
+                            <i className="fas fa-cart-plus" />
+                        </span>
+                        my cart
+                    </ButtonContainer>
+                </Link>
                 <Link to="/register" className="ml-auto p-2">
                     <ButtonContainer>
                         sign up
@@ -25,6 +33,11 @@ class Home extends React.Component {
                         login
                     </ButtonContainer>
                 </Link>
+            </Nav>
+        )
+
+        const userLink = (
+            <Nav className="ml-auto">
                 <Link to="/cart" className="ml-auto p-2">
                     <ButtonContainer>
                         <span className="mr-2">
@@ -33,11 +46,6 @@ class Home extends React.Component {
                         my cart
                     </ButtonContainer>
                 </Link>
-            </Nav>
-        )
-
-        const userLink = (
-            <Nav className="ml-auto">
                 <Link to="/profile" className="ml-auto p-2">
                     <ButtonContainer>
                         my profile
