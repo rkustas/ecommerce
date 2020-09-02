@@ -10,7 +10,7 @@ import Modal from './Containers/Modal'
 export default class App extends React.Component {
 render () {
   return (
-    <div className="App container">
+    <div>
         <Header />
         <Routes />
         <Modal />

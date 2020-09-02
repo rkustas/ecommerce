@@ -13,15 +13,17 @@ import NotFound from "./Containers/NotFound"
 export default class Routes extends React.Component {
   render() {
     return (
-    <Switch>
-      <Route exact path="/login" component={Login}/>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/register" component={Registration} />
-      <Route exact path="/details" component={Details} />
-      <AuthenticatedRoute exact path="/profile" component={Profile} />
-      <Route exact path="/cart" component={Cart} />
-      <Route component={NotFound} />
-    </Switch>
+    <div className="Routes">
+      <Switch>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/register" component={Registration} />
+        <Route exact path="/details" component={Details} />
+        <AuthenticatedRoute exact path="/profile" component={Profile} />
+        <Route exact path="/cart" component={Cart} />
+        <Route component={NotFound} />
+      </Switch>
+    </div>
 
   );
   }

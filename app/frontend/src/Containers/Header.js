@@ -60,7 +60,7 @@ class Home extends React.Component {
         )
 
         return (
-            <Navbar>
+            <Navbar className="bg-dark font-smaller fixed-top">
                 <Navbar.Brand>
                     <Link to="/">
                         <img src={logo} alt="store" className="navbar-brand"/>

@@ -77,7 +77,7 @@ class ProductProvider extends Component {
         const product = tempCart[index];
 
         product.count = product.count +1
-        product.total = product.count * product.Price
+        product.total = Math.round((product.count * product.Price)*100)/100
 
         this.setState(() => {
             return {
@@ -99,7 +99,7 @@ class ProductProvider extends Component {
         if (product.count === 0) {
             this.removeItem(id)
         } else {
-            product.total = product.count * product.Price;
+            product.total = Math.round((product.count * product.Price)*100) / 100;
 
             this.setState(() => {
                 return {
@@ -146,13 +146,25 @@ class ProductProvider extends Component {
         this.state.cart.map(item => (subTotal += item.total));
         const tempTax = subTotal * 0.1;
         const tax = parseFloat(tempTax.toFixed(2));
-        const total = subTotal + tax;
+        const total = Math.round((subTotal + tax)*100)/100;
         this.setState(() => {
             return {
-                cartSubTotal: subTotal.toFixed(2),
+                cartSubTotal: Math.round(subTotal *100)/100,
                 cartTax: tax,
-                cartTotal: total.toFixed(2)
+                cartTotal: total
             }
+        })
+    }
+
+    filterProducts = (Category) => {
+        let tempProducts = [...this.state.products];
+        tempProducts = tempProducts.filter(item => item.Category === Category);
+        this.setState(() => {
+            return {
+                products:[...tempProducts]
+            }
+        }, () => {
+            this.addTotals();
         })
     }
 
@@ -168,7 +180,8 @@ class ProductProvider extends Component {
                 increment:this.increment,
                 decrement:this.decrement,
                 removeItem:this.removeItem,
-                clearCart:this.clearCart
+                clearCart:this.clearCart,
+                filterProducts:this.filterProducts
             }}>
                 {this.props.children}
             </ProductContext.Provider>

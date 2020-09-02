@@ -6,7 +6,7 @@
     --mainYellow: #ffa400;
 }
 
-body {
+html,body {
     font-family: "Oswald", sans-serif !important;
     background: var(--mainWhite) !important;
     color: var(--mainDark) !important;
@@ -57,4 +57,16 @@ body {
 }
 .App .navbar-brand {
     font-weight: bold;
+}
+
+.Routes {
+    padding-top: 5rem;
+}
+
+#scrollbar {
+    position: fixed;
+    float: left;
+}
+#content {
+    margin-left: 290px;
 }
