@@ -9,8 +9,8 @@ export default class Product extends Component {
         const {id, Name, Image, Price, inCart} = this.props.product;
         // console.log(Name);
         return (
-            <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
-                <div className="card">
+            <ProductWrapper className="p-2">
+                <div className="card h-100">
                 <ProductConsumer>
                 {(value) => (
                 <div className="img-container p-5" 
@@ -28,7 +28,7 @@ export default class Product extends Component {
                 </div>)}
                 </ProductConsumer>
                     {/* card footer */}
-                    <div className="card-footer d-flex justify-content-between">
+                    <div className="card-footer d-flex justify-content-between mb-0">
                         <p className="align-self-center mb-0">
                             {Name}
                         </p>
