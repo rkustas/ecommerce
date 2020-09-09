@@ -63,8 +63,6 @@ class ProductProvider extends Component {
       category,
       bodyLocation,
       price,
-      minPrice,
-      maxPrice,
       companyCountry,
       companyName,
     } = this.state;
