@@ -166,7 +166,10 @@ class ProductProvider extends Component {
       () => {
         this.addTotals();
         localStorage.setItem("products", JSON.stringify(this.state.cart)),
-        localStorage.setItem("subtotal", JSON.stringify(this.state.cartSubTotal));
+          localStorage.setItem(
+            "subtotal",
+            JSON.stringify(this.state.cartSubTotal)
+          );
       }
     );
   };
@@ -283,7 +286,7 @@ class ProductProvider extends Component {
         cartTax: tax,
         cartTotal: total,
       };
-    }
+    });
   };
 
   getCategory = (Category) => {
