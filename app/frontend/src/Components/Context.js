@@ -50,9 +50,11 @@ class ProductProvider extends Component {
   componentDidMount() {
     this.getData();
     const cart = localStorage.getItem("products");
+    const subTotal = localStorage.getItem("subtotal");
     this.setState(
       {
         cart: JSON.parse(cart) ? JSON.parse(cart) : [],
+        subTotal: JSON.parse(subTotal) ? JSON.parse(subTotal) : [],
       },
       this.addTotals()
     );
@@ -163,7 +165,8 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
-        localStorage.setItem("products", JSON.stringify(this.state.cart));
+        localStorage.setItem("products", JSON.stringify(this.state.cart)),
+        localStorage.setItem("subtotal", JSON.stringify(this.state.cartSubTotal));
       }
     );
   };
@@ -225,6 +228,7 @@ class ProductProvider extends Component {
         },
         () => {
           this.addTotals();
+          localStorage.setItem("products", JSON.stringify(this.state.cart));
         }
       );
     }
@@ -250,6 +254,7 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
+        localStorage.setItem("products", JSON.stringify(this.state.cart));
       }
     );
   };
@@ -261,6 +266,7 @@ class ProductProvider extends Component {
       () => {
         this.getData();
         this.addTotals();
+        localStorage.setItem("products", JSON.stringify(this.state.cart));
       }
     );
   };
@@ -277,7 +283,7 @@ class ProductProvider extends Component {
         cartTax: tax,
         cartTotal: total,
       };
-    });
+    }
   };
 
   getCategory = (Category) => {
