@@ -48,15 +48,17 @@ const UseFormLogin = (callback, validate) => {
     // console.log(values);
 
     if (Object.keys(validationErrors).length === 0) {
-      axios.post("http://localhost:5000/login", values).then((response) => {
-        if (!response.data.error) {
-          localStorage.setItem("usertoken", response.data.token);
-          history.push("/profile");
-        } else {
-          setIsLoading(false);
-          alert(response.data.error);
-        }
-      });
+      await axios
+        .post("http://localhost:5000/login", values)
+        .then((response) => {
+          if (!response.data.error) {
+            localStorage.setItem("usertoken", response.data.token);
+            history.push("/profile");
+          } else {
+            setIsLoading(false);
+            alert(response.data.error);
+          }
+        });
     } else {
       alert(validationErrors);
     }

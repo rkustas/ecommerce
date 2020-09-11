@@ -1,5 +1,6 @@
 export default function validate(values) {
   let errors = {};
+  const passwordRegex = /(?=.*[0-9])/;
   if (!values.username) {
   } else if (!/^[a-zA-Z0-9]+$/.test(values.username)) {
     errors.username = "Username is invalid";
@@ -8,6 +9,8 @@ export default function validate(values) {
     errors.password = "Password is required";
   } else if (values.password.length < 6) {
     errors.password = "Password needs to be more than 6 characters";
+  } else if (!passwordRegex.test(values.password)) {
+    errors.password = "Invalid password.  Must contain one number";
   }
   if (values.password !== values.confirmPassword) {
     errors.confirmPassword = "Passwords must match!";

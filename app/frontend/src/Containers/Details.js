@@ -8,9 +8,8 @@ export default class Details extends Component {
     return (
       <ProductConsumer>
         {(value) => {
-          console.log(value);
           const {
-            id,
+            productID,
             Name,
             Image,
             Price,
@@ -76,8 +75,8 @@ export default class Details extends Component {
                       cart
                       disabled={inCart ? true : false}
                       onClick={() => {
-                        value.addToCart(id);
-                        value.openModal(id);
+                        value.addToCart(productID);
+                        value.openModal(productID);
                       }}
                     >
                       {inCart ? "inCart" : "add to cart"}

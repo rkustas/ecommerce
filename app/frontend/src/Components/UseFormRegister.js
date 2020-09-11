@@ -24,7 +24,6 @@ const UseFormRegister = (callback, validate) => {
     event.persist();
 
     const { name, value, type, checked } = event.target;
-
     type === "checkbox"
       ? setValues((prevState) => ({ ...prevState, [name]: checked }))
       : setValues((prevState) => ({ ...prevState, [name]: value }));
@@ -35,16 +34,36 @@ const UseFormRegister = (callback, validate) => {
     setErrors(validationErrors);
   };
 
-  async function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     if (event) event.preventDefault();
     const validationErrors = validate(values);
-    // console.log(validationErrors);
+    const errorValues = Object.values(validationErrors);
+
+    // async function getSimilarEmail(email) {
+    //   let response = await fetch(`http://localhost:5000/user/${email}`);
+    //   console.log(response);
+    //   return response;
+    // }
+
+    // async function isEmailValid(values) {
+    //   let email = values.email;
+    //   let users = await getSimilarEmail(email);
+    //   if (users.length) {
+    //     let existingEmail = users[0].email;
+    //     if (existingEmail === email) {
+    //       alert("A user with that email address already exists!");
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // }
+
     setErrors(validationErrors);
     setIsSubmitting(true);
     // console.log(values);
 
     if (Object.keys(validationErrors).length === 0) {
-      axios
+      await axios
         .post("http://localhost:5000/register", values)
         .then((response) => {
           console.log("Registered Successfully");
@@ -56,9 +75,9 @@ const UseFormRegister = (callback, validate) => {
           history.push("/login");
         });
     } else {
-      alert(validationErrors);
+      alert(errorValues);
     }
-  }
+  };
 
   return {
     handleChange,

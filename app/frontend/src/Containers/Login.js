@@ -17,7 +17,9 @@ export default function Login() {
   } = UseFormLogin(login, validateLogin);
 
   function login() {
-    console.log("Submission was successful");
+    if (!errors) {
+      console.log("Submission was successful");
+    }
   }
 
   const errorStyle = {
@@ -32,20 +34,18 @@ export default function Login() {
           <Title name="login" />
           <form onSubmit={handleSubmit}>
             <FormGroup controlId="username" size="large">
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl
                 autoFocus
-                name="username"
-                type="username"
-                value={values.username || ""}
+                name="email"
+                type="email"
+                value={values.email || ""}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 required
               />
             </FormGroup>
-            {errors.username && (
-              <span style={errorStyle}>{errors.username}</span>
-            )}
+            {errors.email && <span style={errorStyle}>{errors.email}</span>}
             <FormGroup controlId="password" size="large">
               <FormLabel>Password</FormLabel>
               <FormControl

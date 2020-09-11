@@ -14,7 +14,7 @@ export default function ProductsList({ products }) {
     <section className="productslist">
       <div className="productslist-center">
         {products.map((product) => {
-          return <Product key={product.id} product={product} />;
+          return <Product key={product.productID} product={product} />;
         })}
       </div>
     </section>

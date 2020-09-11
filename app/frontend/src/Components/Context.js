@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { sampleData, detailData } from "./data";
+import { detailData } from "./data";
+import axios from "axios";
 
 const ProductContext = React.createContext();
 
@@ -7,7 +8,7 @@ class ProductProvider extends Component {
   state = {
     products: [],
     tempProducts: [],
-    detailData: detailData,
+    detailData: [],
     cart: [],
     modalOpen: false,
     modalProduct: detailData,
@@ -23,27 +24,57 @@ class ProductProvider extends Component {
     companyName: "All",
   };
 
-  // Setting up a copy of data and leaving original untouched
-  componentDidMount() {
-    this.setProducts();
-  }
-  setProducts = () => {
+  getData = async () => {
     let tempProducts = [];
     let maxPrice = [];
-    sampleData.forEach((item) => {
-      const singleItem = { ...item };
-      tempProducts = [...tempProducts, singleItem];
-      maxPrice = Math.max(...tempProducts.map((product) => product.Price));
-    });
-    this.setState(() => {
-      return {
-        products: tempProducts,
-        price: maxPrice,
-        maxPrice,
-        tempProducts: tempProducts,
-      };
+    let newProducts = [];
+    let detailData = [];
+    await axios.get("http://localhost:5000/products").then((response) => {
+      tempProducts = response.data;
+      newProducts = [...tempProducts];
+      maxPrice = Math.max(...newProducts.map((product) => product.Price));
+      detailData = response.data[0];
+      this.setState(() => {
+        return {
+          products: tempProducts,
+          price: maxPrice,
+          maxPrice,
+          tempProducts: newProducts,
+          detailData: detailData,
+        };
+      });
     });
   };
+
+  // Setting up a copy of data and leaving original untouched
+  componentDidMount() {
+    this.getData();
+    const cart = localStorage.getItem("products");
+    this.setState(
+      {
+        cart: JSON.parse(cart) ? JSON.parse(cart) : [],
+      },
+      this.addTotals()
+    );
+    // this.setProducts();
+  }
+  // setProducts = () => {
+  //   let tempProducts = [];
+  //   let maxPrice = [];
+  //   sampleData.forEach((item) => {
+  //     const singleItem = { ...item };
+  //     tempProducts = [...tempProducts, singleItem];
+  //     maxPrice = Math.max(...tempProducts.map((product) => product.Price));
+  //   });
+  //   this.setState(() => {
+  //     return {
+  //       products: tempProducts,
+  //       price: maxPrice,
+  //       maxPrice,
+  //       tempProducts: tempProducts,
+  //     };
+  //   });
+  // };
 
   handleChange = (event) => {
     const target = event.target;
@@ -103,38 +134,42 @@ class ProductProvider extends Component {
     });
   };
 
-  getItem = (id) => {
-    const product = this.state.products.find((item) => item.id === id);
+  getItem = (productID) => {
+    const product = this.state.products.find(
+      (item) => item.productID === productID
+    );
     return product;
   };
 
-  handleDetail = (id) => {
-    const product = this.getItem(id);
+  handleDetail = (productID) => {
+    const product = this.getItem(productID);
     this.setState(() => {
       return { detailData: product };
     });
   };
 
-  addToCart = (id) => {
+  addToCart = (productID) => {
     let tempProducts = [...this.state.products];
-    const index = tempProducts.indexOf(this.getItem(id));
+    const index = tempProducts.indexOf(this.getItem(productID));
     const product = tempProducts[index];
     product.inCart = true;
     product.count = 1;
     const price = product.Price;
     product.total = price;
+
     this.setState(
       () => {
         return { products: tempProducts, cart: [...this.state.cart, product] };
       },
       () => {
         this.addTotals();
+        localStorage.setItem("products", JSON.stringify(this.state.cart));
       }
     );
   };
 
-  openModal = (id) => {
-    const product = this.getItem(id);
+  openModal = (productID) => {
+    const product = this.getItem(productID);
     this.setState(() => {
       return { modalProduct: product, modalOpen: true };
     });
@@ -144,9 +179,11 @@ class ProductProvider extends Component {
       return { modalOpen: false };
     });
   };
-  increment = (id) => {
+  increment = (productID) => {
     let tempCart = [...this.state.cart];
-    const selectedProduct = tempCart.find((item) => item.id === id);
+    const selectedProduct = tempCart.find(
+      (item) => item.productID === productID
+    );
     const index = tempCart.indexOf(selectedProduct);
     const product = tempCart[index];
 
@@ -161,19 +198,22 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
+        localStorage.setItem("products", JSON.stringify(this.state.cart));
       }
     );
   };
 
-  decrement = (id) => {
+  decrement = (productID) => {
     let tempCart = [...this.state.cart];
-    const selectedProduct = tempCart.find((item) => item.id === id);
+    const selectedProduct = tempCart.find(
+      (item) => item.productID === productID
+    );
     const index = tempCart.indexOf(selectedProduct);
     const product = tempCart[index];
 
     product.count = product.count - 1;
     if (product.count === 0) {
-      this.removeItem(id);
+      this.removeItem(productID);
     } else {
       product.total = Math.round(product.count * product.Price * 100) / 100;
 
@@ -189,13 +229,13 @@ class ProductProvider extends Component {
       );
     }
   };
-  removeItem = (id) => {
+  removeItem = (productID) => {
     let tempProducts = [...this.state.products];
     let tempCart = [...this.state.cart];
 
-    tempCart = tempCart.filter((item) => item.id !== id);
+    tempCart = tempCart.filter((item) => item.productID !== productID);
 
-    const index = tempProducts.indexOf(this.getItem(id));
+    const index = tempProducts.indexOf(this.getItem(productID));
     let removedProduct = tempProducts[index];
     removedProduct.inCart = false;
     removedProduct.count = 0;
@@ -219,7 +259,7 @@ class ProductProvider extends Component {
         return { cart: [] };
       },
       () => {
-        this.setProducts();
+        this.getData();
         this.addTotals();
       }
     );

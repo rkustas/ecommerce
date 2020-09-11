@@ -12,7 +12,6 @@ import Title from "../Components/Title";
 import UseFormRegister from "../Components/UseFormRegister";
 
 const Registration = () => {
-
   const {
     values,
     errors,
@@ -23,7 +22,9 @@ const Registration = () => {
   } = UseFormRegister(register, validate);
 
   function register() {
-    console.log("Submission was successful");
+    if (!errors) {
+      console.log("Submission was successful");
+    }
   }
 
   const errorStyle = {
