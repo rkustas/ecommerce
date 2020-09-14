@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { detailData } from "./data";
 import axios from "axios";
 
 const ProductContext = React.createContext();
@@ -11,7 +10,10 @@ class ProductProvider extends Component {
     detailData: [],
     cart: [],
     modalOpen: false,
-    modalProduct: detailData,
+    modalProduct: [],
+    newsubtotal: 0,
+    newtax: 0,
+    newtotal: 0,
     cartSubTotal: 0,
     cartTax: 0,
     cartTotal: 0,
@@ -41,6 +43,7 @@ class ProductProvider extends Component {
           maxPrice,
           tempProducts: newProducts,
           detailData: detailData,
+          modalProduct: detailData,
         };
       });
     });
@@ -49,12 +52,20 @@ class ProductProvider extends Component {
   // Setting up a copy of data and leaving original untouched
   componentDidMount() {
     this.getData();
-    const cart = localStorage.getItem("products");
-    const subTotal = localStorage.getItem("subtotal");
     this.setState(
       {
-        cart: JSON.parse(cart) ? JSON.parse(cart) : [],
-        subTotal: JSON.parse(subTotal) ? JSON.parse(subTotal) : [],
+        cart: !localStorage.getItem("products")
+          ? []
+          : JSON.parse(localStorage.getItem("products")).cart,
+        newsubtotal: !localStorage.getItem("products")
+          ? []
+          : JSON.parse(localStorage.getItem("products")).subtotal,
+        newtax: !localStorage.getItem("products")
+          ? []
+          : JSON.parse(localStorage.getItem("products")).tax,
+        newtotal: !localStorage.getItem("products")
+          ? []
+          : JSON.parse(localStorage.getItem("products")).total,
       },
       this.addTotals()
     );
@@ -165,11 +176,19 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
-        localStorage.setItem("products", JSON.stringify(this.state.cart)),
-          localStorage.setItem(
-            "subtotal",
-            JSON.stringify(this.state.cartSubTotal)
-          );
+        let subTotal = 0;
+        this.state.cart.map((item) => (subTotal += item.total));
+        const tempTax = subTotal * 0.1;
+        const tax = parseFloat(tempTax.toFixed(2));
+        const total = Math.round((subTotal + tax) * 100) / 100;
+        const unified = Object.assign(
+          {},
+          { cart: this.state.cart },
+          { subtotal: Math.round(subTotal * 100) / 100 },
+          { tax: tax },
+          { total: total }
+        );
+        localStorage.setItem("products", JSON.stringify(unified));
       }
     );
   };
@@ -204,7 +223,19 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
-        localStorage.setItem("products", JSON.stringify(this.state.cart));
+        let subTotal = 0;
+        this.state.cart.map((item) => (subTotal += item.total));
+        const tempTax = subTotal * 0.1;
+        const tax = parseFloat(tempTax.toFixed(2));
+        const total = Math.round((subTotal + tax) * 100) / 100;
+        const unified = Object.assign(
+          {},
+          { cart: this.state.cart },
+          { subtotal: Math.round(subTotal * 100) / 100 },
+          { tax: tax },
+          { total: total }
+        );
+        localStorage.setItem("products", JSON.stringify(unified));
       }
     );
   };
@@ -231,7 +262,19 @@ class ProductProvider extends Component {
         },
         () => {
           this.addTotals();
-          localStorage.setItem("products", JSON.stringify(this.state.cart));
+          let subTotal = 0;
+          this.state.cart.map((item) => (subTotal += item.total));
+          const tempTax = subTotal * 0.1;
+          const tax = parseFloat(tempTax.toFixed(2));
+          const total = Math.round((subTotal + tax) * 100) / 100;
+          const unified = Object.assign(
+            {},
+            { cart: this.state.cart },
+            { subtotal: Math.round(subTotal * 100) / 100 },
+            { tax: tax },
+            { total: total }
+          );
+          localStorage.setItem("products", JSON.stringify(unified));
         }
       );
     }
@@ -257,7 +300,19 @@ class ProductProvider extends Component {
       },
       () => {
         this.addTotals();
-        localStorage.setItem("products", JSON.stringify(this.state.cart));
+        let subTotal = 0;
+        this.state.cart.map((item) => (subTotal += item.total));
+        const tempTax = subTotal * 0.1;
+        const tax = parseFloat(tempTax.toFixed(2));
+        const total = Math.round((subTotal + tax) * 100) / 100;
+        const unified = Object.assign(
+          {},
+          { cart: this.state.cart },
+          { subtotal: Math.round(subTotal * 100) / 100 },
+          { tax: tax },
+          { total: total }
+        );
+        localStorage.setItem("products", JSON.stringify(unified));
       }
     );
   };
@@ -269,7 +324,19 @@ class ProductProvider extends Component {
       () => {
         this.getData();
         this.addTotals();
-        localStorage.setItem("products", JSON.stringify(this.state.cart));
+        let subTotal = 0;
+        this.state.cart.map((item) => (subTotal += item.total));
+        const tempTax = subTotal * 0.1;
+        const tax = parseFloat(tempTax.toFixed(2));
+        const total = Math.round((subTotal + tax) * 100) / 100;
+        const unified = Object.assign(
+          {},
+          { cart: this.state.cart },
+          { subtotal: Math.round(subTotal * 100) / 100 },
+          { tax: tax },
+          { total: total }
+        );
+        localStorage.setItem("products", JSON.stringify(unified));
       }
     );
   };
