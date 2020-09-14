@@ -36,7 +36,7 @@ export default function Profile() {
     <div>
       <Jumbotron fluid>
         <Container>
-          <h1 className="text-center">Hello {values.email}!</h1>
+          <h1 className="text-center">Hello {values.firstName}!</h1>
         </Container>
       </Jumbotron>
       <Container>
